@@ -1,7 +1,7 @@
 PennController.ResetPrefix(null);
 PennController.DebugOff();
 
-Sequence("Participantes", "Instrucoes", "Experimento1", "Experimento2", "Final", SendResults());
+Sequence("Participantes", "Instrucoes", "TestePerceptivo", "Experimento1", "Experimento2", "Final", SendResults());
 
 Header(
   defaultText
@@ -18,14 +18,14 @@ Header(
 );
 
 newTrial("Participantes",
-  newText("<p>Ola! Seja bem-vindo ao nosso experimento!</p>")
+  newText("Ola! Seja bem-vindo ao nosso experimento!")
     .print(),
-  newText("<p>Por gentileza, escreva o SEU NOME COMPLETO NA CAIXA ABAIXO</p>")
+  newText("Por gentileza, escreva o SEU NOME COMPLETO NA CAIXA ABAIXO")
     .print(),
   newTextInput("SeuNome")
     .print()
     .log(),
-  newText("<p>Por gentileza, selecione o CURSO que faz na UFERSA</p>")
+  newText("Por gentileza, selecione o CURSO que faz na UFERSA")
     .print(),
   newDropDown("curso", "Selecione seu curso")
     .add("Engenharia", "Ciencias e Tecnologias", "Letras")
@@ -34,61 +34,61 @@ newTrial("Participantes",
     .log(),
   newButton("Vamos para as instrucoes")
     .print()
-    .wait(),
-  newVar("NOME")
-    .global()
-    .set(getTextInput("SeuNome"))
-)
-.log("NOME", getVar("NOME"));
+    .wait()
+);
 
 newTrial("Instrucoes",
-  newText("<p>Leia com atenção:</p>")
+  newText("Leia com atenção:")
     .print(),
-  newText("<p>Leia a situação fictícia e leia em voz alta a frase em destaque</p>")
+  newText("Leia a situação fictícia e leia em voz alta a frase em destaque")
     .print(),
   newButton("Iniciar")
     .print()
     .wait()
 );
 
+newTrial("TestePerceptivo",
+  Template("teste_auditivo.csv",
+    row => newTrial("TestePerceptivo",
+      newText("Qual a melhor interpretação?")
+        .print(),
+      newButton("Esquerda")
+        .css("font-size", "1.2em")
+        .print()
+        .left()
+        .wait()
+        .log(),
+      newButton("Direita")
+        .css("font-size", "1.2em")
+        .print()
+        .right()
+        .wait()
+        .log(),
+      newCanvas("canvas", 1000, 500)
+        .add(250, 250, newText("A", row.SentencaA).css("font-size", "1.2em"))
+        .add(750, 250, newText("B", row.SentencaB).css("font-size", "1.2em"))
+        .print(),
+      newSelector()
+        .add(getText("A"), getText("B"))
+        .keys("A", "B")
+        .log()
+        .wait()
+    )
+    .log("Group", row.Group)
+    .log("Item", row.Item)
+  )
+);
+
 newTrial("Experimento1",
-Template("teste_auditivo.csv",
-  row => newTrial("Experimento1",
-    newAudio("AudioExperimento", row.AudioExperimento)
-      .play(),
-    newImage("alto_falante_icone.png")
-      .size(90, 90)
-      .print()
-      .center(),
-    newButton("Próximo")
-      .log()
-      .wait()
-      .remove(),
-    getImage("alto_falante_icone.png")
-      .remove(),
-    newText("A", row.SentencaA)
-      .print(),
-    newText("B", row.SentencaB)
-      .print(),
-    newCanvas("canvas", 1000, 500)
-      .add(250, 250, getText("A"))
-      .add(750, 250, getText("B"))
-      .print(),
-    newSelector()
-      .add(getText("A"), getText("B"))
-      .keys("A", "B")
-      .log()
-      .wait()
-  ))
-  .log("Group", row.Group)
-  .log("Item", row.Item)
+  newText("Aqui seria o Experimento1...")
+    .print(),
+  newButton("Próximo")
+    .print()
+    .wait()
 );
 
 newTrial("Experimento2",
-  newText("Imagine a seguinte situação: você encontra uma receita de macarrão gourmet no TikTok e resolve recriar essa receita. Suponha que você seguiu a receita à risca, com todos os seus passos. Ao final, prova e gosta muito. Você, então, diz:")
-    .print(),
-  newText("Ficou muito gostoso, o macarrão")
-    .css("font-weight", "bold")
+  newText("Aqui seria o Experimento2...")
     .print(),
   newButton("Próximo")
     .print()
